@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# esdk-entry.py
+# rcptt-test-runner-entry.py
 #
 # This script is to present arguments to the user of the container and then
 # chuck them over to the scripts that actually do the work.
@@ -23,7 +23,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--workdir', default='/home/pokyuser',
+parser.add_argument('--workdir', default='/workdir',
                     help='The active directory once the container is running. '
                          'In the abscence of the "id" argument, the uid and '
                          'gid of the workdir will also be used for the user '
@@ -31,6 +31,9 @@ parser.add_argument('--workdir', default='/home/pokyuser',
 parser.add_argument("--id",
                     help='uid and gid to use for the user inside the '
                          'container. It should be in the form uid:gid')
+parser.add_argument('--project', default='/workdir/project',
+		    help='The RCPTT project once the container is running. '
+			 'This is where the tests themselves are defined. ')
 
 args = parser.parse_args()
 
@@ -40,12 +43,7 @@ if args.id:
     uid, gid = args.id.split(":") 
     idargs = "--uid={} --gid={}".format(uid, gid)
 
-elif args.workdir == '/home/pokyuser':
-    # If the workdir wasn't specified pick a default uid and gid since
-    # usersetup won't be able to calculate it from the non-existent workdir
-    idargs = "--uid=1000 --gid=1000"
-
-cmd = """usersetup.py --username=pokyuser --workdir={wd} {idargs}
-         poky-launch.sh {wd}""".format(wd=args.workdir, idargs=idargs)
+cmd = """usersetup.py --username=rcpttuser --workdir={wd} {idargs}
+         rcptt-test-runner-launch.sh {wd} {prj}""".format(wd=args.workdir, idargs=idargs, prj=args.project)
 cmd = cmd.split()
 os.execvp(cmd[0], cmd)

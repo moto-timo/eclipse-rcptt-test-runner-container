@@ -1,0 +1,49 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Install Yocto Project Documentation Plugin
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _JSCb8GpUEeaDdv98aFhosw
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 8/29/16 10:43 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-menu "Help/Install New Software..." | click
+with [get-window Install] {
+    get-button "Add..." | click
+    with [get-window "Add Repository"] {
+    	get-editbox -after [get-label "Name:"] | set-text "Yocto Project Plugin Site"
+    	get-editbox -after [get-label "Location:"] | set-text "http://downloads.yoctoproject.org/releases/eclipse-plugin/2.1.1/mars/"
+    	get-button "OK" | click
+    }
+    get-tree | get-item "Yocto Project Documentation plug-in" | check
+    with [get-button "Next >"] {
+        click
+        click
+    }
+    get-button "I accept the terms of the license agreements" | click
+    get-button Finish | click
+}
+get-window "Software Updates" | get-button Yes | click
+wait-until-eclipse-is-ready
+//show-view  "org.eclipse.help.ui.HelpView" // show-view scriplet doesn't exist
+//get-menu "Help/Help Contents" | click
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+	get-tree | get-item Help | expand | get-item Help | click
+	get-button "OK" | click
+	get-view Help | get-link Contents | click
+}
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Quick Start" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Software Development Kit (SDK) Developer's Guide" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Development Manual" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Reference Manual" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Board Support Package Developer's Guide" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Linux Kernel Development Manual" | click
+get-view Help | get-tree | select "Yocto Project Documentation/Yocto Project Tracing and Profiling Manual" | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
