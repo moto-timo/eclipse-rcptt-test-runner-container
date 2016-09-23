@@ -41,21 +41,22 @@ runnerPath=/tmp/rcptt-test-runner/eclipse
 autPath=/tmp/eclipse-cdt/eclipse
 #project=installYoctoPlugins
 if [[ -d $2 ]]; then
-  project=$2
+  cp -R $2 $workspace/temp-project
 else
-  cp -R /usr/share/rcptt/project $workspace/project
-  sudo chown -R rcpttuser:rcpttuser $workspace/project
+  cp -R /usr/share/rcptt/project $workspace/temp-project
 fi
+project=$workspace/temp-project
 
 # Set the host display (you did xhost + right?)
-export DISPLAY=$3
+# pass -e DISPLAY=$DISPLAY to docker run
+#export DISPLAY=$3
 xeyes
 
 # properties below configure all intermediate and result files
 # to be put in "results" folder next to a project folder. If
 # that's ok, you can leave them as is
 
-testResults=$project/../results
+testResults=$workspace/results
 runnerWorkspace=$testResults/runner-workspace
 autWorkspace=$testResults/aut-workspace-
 autOut=$testResults/aut-out-
