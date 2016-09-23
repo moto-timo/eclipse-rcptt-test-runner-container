@@ -34,6 +34,9 @@ parser.add_argument("--id",
 parser.add_argument('--project', default='/workdir/project',
 		    help='The RCPTT project once the container is running. '
 			 'This is where the tests themselves are defined. ')
+parser.add_argument('--display', default='127.0.0.1:0',
+		    help='The X11 display exposed by the host. '
+			 'This will allow the user to what the activity.')
 
 args = parser.parse_args()
 
@@ -44,6 +47,6 @@ if args.id:
     idargs = "--uid={} --gid={}".format(uid, gid)
 
 cmd = """usersetup.py --username=rcpttuser --workdir={wd} {idargs}
-         rcptt-test-runner-launch.sh {wd} {prj}""".format(wd=args.workdir, idargs=idargs, prj=args.project)
+         rcptt-test-runner-launch.sh {wd} {prj} {disp}""".format(wd=args.workdir, idargs=idargs, prj=args.project, disp=args.display)
 cmd = cmd.split()
 os.execvp(cmd[0], cmd)

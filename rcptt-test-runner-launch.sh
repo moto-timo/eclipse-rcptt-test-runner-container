@@ -47,6 +47,10 @@ else
   sudo chown -R rcpttuser:rcpttuser $workspace/project
 fi
 
+# Set the host display (you did xhost + right?)
+export DISPLAY=$3
+xeyes
+
 # properties below configure all intermediate and result files
 # to be put in "results" folder next to a project folder. If
 # that's ok, you can leave them as is

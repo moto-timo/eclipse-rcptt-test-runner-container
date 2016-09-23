@@ -32,7 +32,7 @@ COPY default-rcptt-project/ /usr/share/rcptt/project
 # The usersetup user is solely for adding a new user that has the same uid,
 # as the workspace. 70 is an arbitrary *low* unused uid on debian.
 RUN apt-get -y update && \
-    apt-get -y install sudo openjdk-8-jdk && \
+    apt-get -y install sudo openjdk-8-jdk x11-apps && \
     apt-get clean && \
     userdel -r yoctouser && \
     groupadd -g 70 usersetup && \
