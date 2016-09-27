@@ -40,6 +40,7 @@ cd $workspace
 runnerPath=/tmp/rcptt-test-runner/eclipse
 autPath=/tmp/eclipse-cdt/eclipse
 #project=installYoctoPlugins
+rm -rf $workspace/temp-project
 if [[ -d $2 ]]; then
   cp -R $2 $workspace/temp-project
 else
