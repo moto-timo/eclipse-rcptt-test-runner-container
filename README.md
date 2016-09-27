@@ -7,10 +7,13 @@ the output generated in the container will be readable by the user on the
 host.
 
 TL;DR
+-----
+```
 $ docker build -t crops/eclipse-rcptt-test-runner:neon .
-
+```
+```
 $ docker run --rm -t -v /home/$USER/workdir:/workdir crops/eclipse-rcptt-test-runner:neon
-
+```
 
 Brief Introduction to RCPTT
 ---------------------------
