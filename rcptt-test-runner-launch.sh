@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 
+# Eclipse needs a display
+tightvncserver :42
+export DISPLAY=:42
+
 # Install test runner into  /tmp
 cd /tmp
 if [[ -d "rcptt-test-runner" ]]; then
@@ -39,19 +43,21 @@ cd $workspace
 # Set properties below
 runnerPath=/tmp/rcptt-test-runner/eclipse
 autPath=/tmp/eclipse-cdt/eclipse
-#project=installYoctoPlugins
+
+# Create fresh temporary RCPTT project
+rm -rf $workspace/temp-project
 if [[ -d $2 ]]; then
-  project=$2
+  cp -R $2 $workspace/temp-project
 else
-  cp -R /usr/share/rcptt/project $workspace/project
-  sudo chown -R rcpttuser:rcpttuser $workspace/project
+  cp -R /usr/share/rcptt/project $workspace/temp-project
 fi
+project=$workspace/temp-project
 
 # properties below configure all intermediate and result files
 # to be put in "results" folder next to a project folder. If
 # that's ok, you can leave them as is
 
-testResults=$project/../results
+testResults=$workspace/results
 runnerWorkspace=$testResults/runner-workspace
 autWorkspace=$testResults/aut-workspace-
 autOut=$testResults/aut-out-
