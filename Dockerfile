@@ -34,6 +34,10 @@ COPY default-rcptt-project/ /usr/share/rcptt/project
 RUN apt-get -y update && \
     apt-get -y install sudo openjdk-8-jdk && \
     apt-get clean && \
+    mkdir -p /etc/skel/.vnc && \
+    echo "" | vncpasswd -f > /etc/skel/.vnc/passwd && \
+    chmod 0600 /etc/skel/.vnc/passwd && \
+    /usr/sbin/locale-gen en_US.UTF-8 && \
     userdel -r yoctouser && \
     groupadd -g 70 usersetup && \
     useradd -N -m -u 70 -g 70 usersetup && \
