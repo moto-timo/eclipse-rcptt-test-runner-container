@@ -1,19 +1,44 @@
-# The language is set to python to ensure virtualenv and python exist for the
-# tests.
-language: python
-
+# We need sudo for TUN/TAP
 sudo: required
-services:
-  - docker
+
+# We want Ubuntu 14.04 LTS
+dist: trusty
 
 env:
   global:
-    - REPO=crops/poky
-    - secure: "Elbh4m0BAIUiYaF5dukzGPppQVipTKI3ZshUWhOgGYzmLC/OBw9MzHD/rSiil+cJk2LhDvqQNvtWVbrVIVOCf/uM9G5j2lvIuATiVgndQG7ne/xTIpFr3PRVXfL4tCXJOP10HCGceHjY78uK2aZuqwolIMM4ITx8hvWwIzE9fx6RBwVxPCVWm3FN5r4M3PNCkin6s+PGFSUNSXBEBNytHuhULODdGhMD5KUMC0M5kUz2NCGHICBrKdqq/uNOLVhkayVE1LgOBWHx9oDDX20romJS7tuaKc2CWS3Qaxf7lJMgCCzGqHdF+hhK7DR4fZefKtuyW+InEiB4FrKfPFM43iz72P9moRaoZZJ3w5LZjHBinKiB5m8Nfe3MHfxF1s25+6ToRkgnGi+0swEM2gkifdmW78urFz8TqQ8eQ9jHa5xjVBC/splVqKqlAhOmHiqNc0pffCs/poyCge9IEAKu4Sm+EpknAWPsawnph3Q0UW1n8x8E7XXWdAzAD4CCGdxCe1fyrw3RcywqWMlNm5/7QjBeeNdYzS7BOcyj8l31B0KMADFI6scpMhMTY7n56/7bJovCFq2zqpos/YmaufHSj07CvUNL/u2e9wNbrxiDKh5EFgaPqvZYt/uEtSTdvAk7uShvVzhf4sk+GzR3AWdja4IZMNCqzJ9yxFk7MZRfO6E="
-    - secure: "n/0cc9tfQ8U86bTL4wdKhlqgk3DEeD9z7a6ViyDMEztsuNwX8+ziCusnO1LPFpiEe9ktO6gJPf9c9ejr6sWIT4xs05Xtgym0mnz0VqS71l8L/xUnWDcMVzyKpZsGfAOadYKcz9JIiPV63ssJGxlUpGB/NICgLGuj9aYuBzS5Ob7eILtFwVkGqK6lZ038fYaO+1Tphc53QWipY/z60XbB+0zR9NHts6dYlpHyknfPoigUHC9nWgafZnLVO7C4+pFrotHzAXfMqj3ZRyTRTgqxMX91j2Xnsi6V+qIk/oAJWF/ODTQKaJDekgjrUd6nn/WxImMTXoSaVaUtzXq/s50ebvK1iD7IDpvCZRux6D2mdwKFFwQxMcac0NcbG9M5vs9Q5MoSuNieNr8DaDDgICOCRVmnm5BW2+RGtfY0UpQtKXy5ST0QwMmHV9vX/qBd9haK0JjzJkBJPOLNkvSdIJMT7la+jTuX2K8DQhlPVxhWMBJ43oXA38OGq3lD+Y/zGYVyA3usm16eaUtgoPjk9gDs5f1NB65zTK87fpink902kov3WHrRQ8fJ1ikU6PUjC2iBxjxI4KOSmRALmLuXJ/NQnXjqhnztGahuvnI3E945BCB9cmnyyibYFRM5LjDAzD78Ii2qo1oWzvlRNk4PwgR9810BFI6vuHb5jo/3FG9Fcuw="
+    - DISPLAY=:99.0
+
+addons:
+  apt:
+    packages:
+      - rpcbind
+      - metacity
+
+before_install:
+  - wget http://autobuilder.yoctoproject.org/pub/releases/yocto-2.2.rc6/machines/qemu/qemux86/bzImage-qemux86.bin
+  - wget http://autobuilder.yoctoproject.org/pub/releases/yocto-2.2.rc6/machines/qemu/qemux86/core-image-sato-sdk-qemux86.tar.bz2
+  - wget http://autobuilder.yoctoproject.org/pub/releases/yocto-2.2.rc6/toolchain/x86_64/poky-glibc-x86_64-core-image-sato-i586-toolchain-2.2.sh
+
+install:
+  - mkdir -p $HOME/poky/2.2
+  - chmod +x poky-glibc-x86_64-core-image-sato-i586-toolchain-2.2.sh
+  - ./poky-glibc-x86_64-core-image-sato-i586-toolchain-2.2.sh -y -d $HOME/poky/2.2
+  - source $HOME/poky/2.2/environment-setup-i586-poky-linux
+  - runqemu-extract-sdk core-image-sato-sdk-qemux86.tar.bz2 $HOME/qemux86-2.2 
+
+after_install:
+  - sudo service portmap restart
+
+before_script:
+  - env
+  - which runqemu
+  - which python3
+  - export SWT_GTK3=0
+  - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16
+  - sh -e /etc/init.d/xvfb start
+  - sleep 10
 
 script:
-  - docker build -t ${REPO} .
-
-after_success:
-  - bash deploy.sh
+  - runqemu bzImage-qemux86.bin $HOME/qemux86-2.2 nographic &
+  - docker build -t crops/eclipse-rcptt-test-runner:neon-1a .
+  - docker run --rm -t -v /tmp/.X11-unix/X99:/tmp/.X11-unix/X99 -v $HOME/workdir:/workdir -e DISPLAY=$DISPLAY crops/eclipse-rcptt-test-runner:neon-1a

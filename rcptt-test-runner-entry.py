@@ -34,6 +34,11 @@ parser.add_argument("--id",
 parser.add_argument('--project', default='/workdir/project',
 		    help='The RCPTT project once the container is running. '
 			 'This is where the tests themselves are defined. ')
+parser.add_argument('--args', nargs=argparse.REMAINDER,
+                    help='Any remaining arguments are passed to the test runner. '
+                         'Examples:'
+                         '  -injection:/path/to/directory/containing/plugins '
+                         '  -autVMArgs -Dsomeproperty=somevalue ' )
 
 args = parser.parse_args()
 
@@ -43,7 +48,13 @@ if args.id:
     uid, gid = args.id.split(":") 
     idargs = "--uid={} --gid={}".format(uid, gid)
 
+rcpttargs = ""
+if args.args:
+    for arg in args.args:
+        rcpttargs += arg if rcpttargs==None else ' '.join(arg)
+
 cmd = """usersetup.py --username=rcpttuser --workdir={wd} {idargs}
-         rcptt-test-runner-launch.sh {wd} {prj}""".format(wd=args.workdir, idargs=idargs, prj=args.project)
+         rcptt-test-runner-launch.sh {wd} {prj} {rcpttargs}""".format(wd=args.workdir, idargs=idargs, prj=args.project, rcpttargs=rcpttargs )
 cmd = cmd.split()
 os.execvp(cmd[0], cmd)
+#print cmd

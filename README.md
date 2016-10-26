@@ -7,7 +7,13 @@ the output generated in the container will be readable by the user on the
 host.
 
 TL;DR
-docker run --rm -t -v /tmp/.X11-unix/X0:/tmp/.X11-unix/X0 -e DISPLAY=:0 -v /home/<user>/workdir:/workdir crops/eclipse-rcptt-test-runner:neon-debug
+-----
+```
+docker build -t crops/eclipse-rcptt-test-runner:neon-debug .
+```
+```
+docker run --rm -t -v /tmp/.X11-unix/X0:/tmp/.X11-unix/X0 -e DISPLAY=:0 -v /home/$USER/workdir:/workdir crops/eclipse-rcptt-test-runner:neon-debug
+```
 
 Brief Introduction to RCPTT
 ---------------------------

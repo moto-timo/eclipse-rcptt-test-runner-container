@@ -48,10 +48,12 @@ else
 fi
 project=$workspace/temp-project
 
+# NOTE: $3 is 'args' passed to -entry.py (argparse.REMAINDER)
+args=$3
+
 # Set the host display (you did xhost + right?)
 # pass -e DISPLAY=$DISPLAY to docker run
-#export DISPLAY=$3
-xeyes
+#xeyes
 
 # properties below configure all intermediate and result files
 # to be put in "results" folder next to a project folder. If
@@ -76,5 +78,5 @@ java -jar $runnerPath/plugins/org.eclipse.equinox.launcher_*.jar \
      -autConsolePrefix $autOut \
      -htmlReport $htmlReport \
      -junitReport $junitReport \
-     -import $project
-
+     -import $project \
+     $args
