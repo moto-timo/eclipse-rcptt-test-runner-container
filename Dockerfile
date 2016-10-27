@@ -42,6 +42,8 @@ RUN apt-get -y update && \
         /usr/bin/rcptt-test-runner-launch.sh \
         /usr/bin/restrict_groupadd.sh \
         /usr/bin/restrict_useradd.sh && \
+    chmod 644 /tmp/rcptt.runner*.zip \
+        /tmp/eclipse-cpp*.tar.gz && \
     echo "#include /etc/sudoers.usersetup" >> /etc/sudoers
 
 USER usersetup
