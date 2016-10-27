@@ -41,4 +41,4 @@ before_script:
 script:
   - runqemu bzImage-qemux86.bin $HOME/qemux86-2.2 nographic &
   - docker build -t crops/eclipse-rcptt-test-runner:neon-1a .
-  - docker run --rm -t -v /tmp/.X11-unix/X99:/tmp/.X11-unix/X99 -v $HOME/workdir:/workdir -e DISPLAY=$DISPLAY crops/eclipse-rcptt-test-runner:neon-1a
+  - docker run --rm -t -v /tmp/.X11-unix/X99:/tmp/.X11-unix/X99 -v $HOME/workdir:/workdir -e DISPLAY=$DISPLAY crops/eclipse-rcptt-test-runner:neon-1a --id $(id -u):$(id -g)
