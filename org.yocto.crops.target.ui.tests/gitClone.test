@@ -1,0 +1,55 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _mlKaQKh6Eeaf2o-i-8xwkg
+Element-Name: gitClone
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _McHYUKh7Eeaf2o-i-8xwkg
+Runtime-Version: 2.1.0.201605312320
+Save-Time: 11/12/16 2:04 AM
+Testcase-Type: ecl
+Verifications: _DjQr0Kh8Eeaf2o-i-8xwkg
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Git Repositories" | get-link "Clone a Git repository" | click
+with [get-window "Clone Git Repository"] {
+    get-tree | select "Clone URI"
+    get-button "Next >" | click
+    with [get-group Location | get-editbox -after [get-label "URI:"]] {
+        set-text "https://github.com/crops/eclipse-crops"
+        set-text "https://github.com/crops/eclipse-crops.git"
+    }
+    get-button "Next >" | click
+    get-tree | select master
+    get-button "Deselect All" | click
+    with [get-tree] {
+        get-item master | check
+        select master
+    }
+    get-button "Next >" | click
+}
+set-dialog-result File
+with [get-window "Clone Git Repository"] {
+    get-group Destination | get-button Browse | click
+    get-button Finish | click
+}
+get-view "Git Repositories" | get-tree 
+    | select "eclipse-crops [master] - \\/home\\/rcpttuser\\/git\\/eclipse-crops\\/.git" 
+    | get-menu "Import Projects..." | click
+with [get-window "Import Projects from Git Repository /home/rcpttuser/git/eclipse-crops/.git"] {
+    get-tree | select "Working Tree - \\/home\\/rcpttuser\\/git\\/eclipse-crops/releng/org.yocto.crops.target"
+    get-button "Next >" | click
+    get-button Finish | click
+}
+get-button "Open Perspective" | click
+with [get-window "Open Perspective"] {
+    get-table | select "Plug-in Development"
+    get-button OK | click
+}
+get-view "Project Explorer" | get-tree | select "org.yocto.crops.target \\[eclipse-crops master\\]/crops.target" 
+    | double-click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -24,9 +24,9 @@ ADD https://raw.githubusercontent.com/crops/extsdk-container/master/restrict_use
 COPY rcptt-test-runner-entry.py rcptt-test-runner-launch.sh /usr/bin/
 COPY sudoers.usersetup /etc/
 ADD http://download.eclipse.org/rcptt/release/2.1.0/runner/rcptt.runner-2.1.0.zip /tmp/
-ADD http://download.eclipse.org/technology/epp/downloads/release/neon/1a/eclipse-cpp-neon-1a-linux-gtk-x86_64.tar.gz /tmp/
-#COPY rcptt.runner-2.1.0.zip eclipse-cpp-neon-1a-linux-gtk-x86_64.tar.gz /tmp/
-COPY default-rcptt-project/ /usr/share/rcptt/project
+ADD http://download.eclipse.org/technology/epp/downloads/release/neon/1a/eclipse-committers-neon-1a-linux-gtk-x86_64.tar.gz /tmp/
+#COPY rcptt.runner-2.1.0.zip eclipse-committers-neon-1a-linux-gtk-x86_64.tar.gz /tmp/
+COPY org.yocto.crops.target.ui.tests/ /usr/share/rcptt/project
 
 # We remove the user because we add a new one of our own.
 # The usersetup user is solely for adding a new user that has the same uid,
@@ -43,7 +43,7 @@ RUN apt-get -y update && \
         /usr/bin/restrict_groupadd.sh \
         /usr/bin/restrict_useradd.sh && \
     chmod 644 /tmp/rcptt.runner*.zip \
-        /tmp/eclipse-cpp*.tar.gz && \
+        /tmp/eclipse-committers*.tar.gz && \
     echo "#include /etc/sudoers.usersetup" >> /etc/sudoers
 
 USER usersetup

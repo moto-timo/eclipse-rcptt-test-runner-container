@@ -28,9 +28,9 @@ cd /tmp
 if [[ -d "eclipse-cdt" ]]; then
   rm -rf eclipse-cdt
 fi
-mkdir eclipse-cdt
-cd eclipse-cdt
-tar xzf /tmp/eclipse-cpp*.tar.gz
+mkdir eclipse-committers
+cd eclipse-committers
+tar xzf /tmp/eclipse-committers*.tar.gz
 
 # Establish the workspace and project
 workspace=$1
@@ -38,7 +38,7 @@ cd $workspace
 
 # Set properties below
 runnerPath=/tmp/rcptt-test-runner/eclipse
-autPath=/tmp/eclipse-cdt/eclipse
+autPath=/tmp/eclipse-committers/eclipse
 #project=installYoctoPlugins
 rm -rf $workspace/temp-project
 if [[ -d $2 ]]; then
