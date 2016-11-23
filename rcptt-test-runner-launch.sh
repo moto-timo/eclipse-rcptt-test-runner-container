@@ -14,8 +14,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 
 # Eclipse needs a display
-tightvncserver :42
-export DISPLAY=:42
+tightvncserver -rfbport 5900 -geometry 1280x1024 -name ECLIPSE-TESTRUNNER
+export DISPLAY=:1
+fluxbox -display $DISPLAY &
 
 # Install test runner into  /tmp
 cd /tmp
@@ -77,4 +78,3 @@ java -jar $runnerPath/plugins/org.eclipse.equinox.launcher_*.jar \
      -htmlReport $htmlReport \
      -junitReport $junitReport \
      -import $project
-
