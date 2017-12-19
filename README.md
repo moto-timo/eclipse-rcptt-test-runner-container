@@ -9,10 +9,10 @@ host.
 TL;DR
 -----
 ```
-$ docker build -t crops/eclipse-rcptt-test-runner:neon .
+$ docker build -t crops/eclipse-rcptt-test-runner:oxygen.2 .
 ```
 ```
-$ docker run --rm -t -v /home/$USER/workdir:/workdir crops/eclipse-rcptt-test-runner:neon
+$ docker run --rm -t -v /home/$USER/workdir:/workdir crops/eclipse-rcptt-test-runner:oxygen.2
 ```
 
 Brief Introduction to RCPTT
