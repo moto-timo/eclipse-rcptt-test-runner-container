@@ -23,8 +23,8 @@ ADD https://raw.githubusercontent.com/crops/extsdk-container/master/restrict_use
         /usr/bin/
 COPY rcptt-test-runner-entry.py rcptt-test-runner-launch.sh /usr/bin/
 COPY sudoers.usersetup /etc/
-ADD http://download.eclipse.org/rcptt/release/2.1.0/runner/rcptt.runner-2.1.0.zip /tmp/
-ADD http://download.eclipse.org/technology/epp/downloads/release/neon/R/eclipse-cpp-neon-R-linux-gtk-x86_64.tar.gz /tmp/
+ADD http://download.eclipse.org/rcptt/release/2.2.0/runner/rcptt.runner-2.2.0.zip /tmp/
+ADD http://download.eclipse.org/technology/epp/downloads/release/oxygen/R/eclipse-cpp-oxygen-R-linux-gtk-x86_64.tar.gz /tmp/
 #COPY rcptt.runner-2.1.0.zip eclipse-cpp-neon-R-linux-gtk-x86_64.tar.gz /tmp/
 COPY default-rcptt-project/ /usr/share/rcptt/project
 
